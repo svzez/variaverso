@@ -1,0 +1,106 @@
+name: Terraform Plan & Apply
+
+on:
+  pull_request:
+    paths:
+      - 'terraform/svzez-com/**'
+    types: [opened, synchronize, reopened]
+    branches:
+      - main
+  push:
+    paths:
+      - 'terraform/svzez-com/**'
+    branches:
+      - main
+
+env:
+  TF_ROOT_DIR: terraform/svzez-com
+
+permissions:
+  id-token: write 
+  contents: read 
+  pull-requests: write 
+
+jobs:
+  terraform_plan:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.ref }} 
+      - name: Sanitize Branch Name
+        id: branch-id 
+        run: |
+          # This replaces ALL occurrences of '/' with '-'
+          CLEAN_REF_NAME=$(echo "${{ github.ref_name }}" | tr / -)
+          
+          # Pass the clean value as a step output for the next step to consume
+          echo "clean_ref_name=$CLEAN_REF_NAME" >> $GITHUB_OUTPUT
+
+      - name: Configure AWS Credentials (for Plan)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN }} 
+          aws-region: ca-central-1
+          role-session-name: plan-session-${{ steps.branch-id.outputs.clean_ref_name }}
+          
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform Init
+        run: terraform -chdir=${{ env.TF_ROOT_DIR }} init -reconfigure
+
+      - name: Terraform Plan
+        id: plan
+        run: terraform -chdir=${{ env.TF_ROOT_DIR }} plan -no-color -input=false -out=tfplan
+
+      - name: Post Plan to PR
+        uses: actions/github-script@v6
+        if: always() # Run even if plan fails to report status
+        with:
+          script: |
+            const planOutput = process.env.PLAN_OUTPUT || 'Terraform plan failed or found no changes.';
+            const comment = `#### Terraform Plan for commit ${{ github.sha }}\n\n\`\`\`terraform\n${planOutput}\n\`\`\``;
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
+        env:
+          PLAN_OUTPUT: ${{ steps.plan.outputs.stdout }}
+
+      - name: Upload Terraform Plan Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: tfplan-${{ github.sha }}
+          path: tfplan
+
+  terraform_apply:
+    runs-on: ubuntu-latest
+    needs: [terraform_plan]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials (for Apply)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN }}
+          aws-region: ca-central-1
+          role-session-name: apply-session-main
+          
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Download Terraform Plan Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: tfplan-${{ github.sha }}
+
+      - name: Terraform Apply
+        run: terraform apply -auto-approve tfplan

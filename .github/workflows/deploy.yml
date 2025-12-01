@@ -24,9 +24,8 @@ permissions:
   pull-requests: write 
 
 jobs:
-  terraform_plan:
+  terraform_plan_apply:
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request'
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -47,54 +46,8 @@ jobs:
         run: terraform -chdir=${{ env.TF_ROOT_DIR }} init -reconfigure
 
       - name: Terraform Plan
-        id: plan
         run: terraform -chdir=${{ env.TF_ROOT_DIR }} plan -no-color -input=false -out=tfplan
-
-      - name: Post Plan to PR
-        uses: actions/github-script@v6
-        if: always() # Run even if plan fails to report status
-        with:
-          script: |
-            const planOutput = process.env.PLAN_OUTPUT || 'Terraform plan failed or found no changes.';
-            const comment = `#### Terraform Plan for commit ${{ github.sha }}\n\n\`\`\`terraform\n${planOutput}\n\`\`\``;
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: comment
-            });
-        env:
-          PLAN_OUTPUT: ${{ steps.plan.outputs.stdout }}
-
-      - name: Upload Terraform Plan Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: tfplan-${{ github.sha }}
-          path: tfplan
-
-  terraform_apply:
-    runs-on: ubuntu-latest
-    needs: [terraform_plan]
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
-
-      - name: Configure AWS Credentials (for Apply)
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN }}
-          aws-region: ca-central-1
-          role-session-name: apply-session-main
-          
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v3
-
-      - name: Download Terraform Plan Artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: tfplan-${{ github.sha }}
 
       - name: Terraform Apply
         run: terraform apply -auto-approve tfplan
+        if: github.ref == 'refs/heads/main'

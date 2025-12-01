@@ -6,7 +6,7 @@ on:
   push:
     paths:
       - 'terraform/svzez-com/**'
-      - '.github/workflows'
+      - '.github/workflows/**'
 
 env:
   TF_ROOT_DIR: terraform/svzez-com

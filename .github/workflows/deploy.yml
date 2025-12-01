@@ -38,7 +38,7 @@ jobs:
         run: terraform -chdir=${{ env.TF_ROOT_DIR }} init -reconfigure
 
       - name: Terraform Plan
-        run: terraform -chdir=${{ env.TF_ROOT_DIR }} plan -no-color -input=false -out=tfplan
+        run: terraform -chdir=${{ env.TF_ROOT_DIR }} plan -input=false -out=tfplan
 
       - name: Terraform Apply
         run: terraform apply -auto-approve tfplan

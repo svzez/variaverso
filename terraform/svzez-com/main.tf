@@ -72,7 +72,7 @@ resource "aws_s3_bucket_policy" "svzez_com" {
 resource "aws_s3_object" "index" {
   bucket = aws_s3_bucket.svzez_com.id
   key    = "index.html"
-  source = "index.html"
+  source = "./index.html"
 }
 
 output "website_endpoint" {

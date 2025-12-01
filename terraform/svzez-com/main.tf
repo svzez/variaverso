@@ -70,9 +70,10 @@ resource "aws_s3_bucket_policy" "svzez_com" {
 
 # 6. (Optional) Upload a sample index.html
 resource "aws_s3_object" "index" {
-  bucket = aws_s3_bucket.svzez_com.id
-  key    = "index.html"
-  source = "./index.html"
+  bucket       = aws_s3_bucket.svzez_com.id
+  key          = "index.html"
+  source       = "./index.html"
+  content_type = "text/html"
 }
 
 output "website_endpoint" {

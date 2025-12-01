@@ -13,6 +13,8 @@ on:
     branches:
       - main
 
+  workflow_dispatch:
+
 env:
   TF_ROOT_DIR: terraform/svzez-com
 

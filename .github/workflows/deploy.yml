@@ -6,6 +6,7 @@ on:
   push:
     paths:
       - 'terraform/svzez-com/**'
+      - '.github/workflows'
 
 env:
   TF_ROOT_DIR: terraform/svzez-com
@@ -41,5 +42,5 @@ jobs:
         run: terraform -chdir=${{ env.TF_ROOT_DIR }} plan -input=false -out=tfplan
 
       - name: Terraform Apply
-        run: terraform apply -auto-approve tfplan
+        run: terraform -chdir=${{ env.TF_ROOT_DIR }} apply -auto-approve tfplan
         if: github.ref == 'refs/heads/main'

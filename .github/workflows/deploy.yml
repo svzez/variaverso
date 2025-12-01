@@ -1,19 +1,15 @@
 name: Terraform Plan & Apply
 
 on:
-  pull_request:
-    paths:
-      - 'terraform/svzez-com/**'
-    types: [opened, synchronize, reopened]
-    branches:
-      - main
+  workflow_dispatch:
+
   push:
     paths:
       - 'terraform/svzez-com/**'
     branches:
       - main
 
-  workflow_dispatch:
+
 
 env:
   TF_ROOT_DIR: terraform/svzez-com

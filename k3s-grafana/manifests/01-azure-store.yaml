@@ -1,0 +1,9 @@
+apiVersion: external-secrets.io/v1
+kind: ClusterSecretStore
+metadata:
+  name: azure-backend
+spec:
+  provider:
+    azurekv:
+      authType: ManagedIdentity
+      vaultUrl: "https://<your-azure-vault>.vault.azure.net/"

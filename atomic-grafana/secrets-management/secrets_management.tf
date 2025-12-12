@@ -28,7 +28,7 @@ data "azurerm_key_vault" "monitoring_secrets" {
 
 resource "azurerm_key_vault_secret" "secrets" {
   for_each     = toset(keys(nonsensitive(data.sops_file.monitoring_secrets.data)))
-  name         = "TEST-${replace(each.key, "/[^0-9a-zA-Z-]/", "-")}"
-  value        = "${data.sops_file.monitoring_secrets.data[each.key]}"
+  name         = replace(each.key, "/[^0-9a-zA-Z-]/", "-")
+  value        = data.sops_file.monitoring_secrets.data[each.key]
   key_vault_id = data.azurerm_key_vault.monitoring_secrets.id
 }

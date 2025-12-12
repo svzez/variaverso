@@ -1,0 +1,23 @@
+apiVersion: helm.cattle.io/v1
+kind: HelmChartConfig
+metadata:
+  name: traefik
+  namespace: kube-system
+spec:
+  valuesContent: |-
+    ports:
+      web:
+        # Defaults handle the port/expose settings.
+        # We only strictly add the redirection here.
+        redirections:
+          entryPoint:
+            to: websecure
+            scheme: https
+            permanent: true
+      websecure:
+        # Usually, you don't need to redeclare this unless changing it.
+        # If websecure is missing or closed by default, you might need:
+        # tls:
+        #   enabled: true
+        expose:
+          default: true

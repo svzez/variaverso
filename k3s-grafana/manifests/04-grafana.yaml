@@ -1,0 +1,66 @@
+apiVersion: helm.cattle.io/v1
+kind: HelmChart
+metadata:
+  name: grafana
+  namespace: kube-system
+spec:
+  repo: https://grafana.github.io/helm-charts
+  chart: grafana
+  version: 10.3.0
+  targetNamespace: grafana
+  createNamespace: true
+  valuesContent: |-
+    admin:
+      ## Name of the secret. Can be templated.
+      existingSecret: "grafana-admin-credentials"
+      userKey: admin-user
+      passwordKey: admin-password
+    envFromSecret: "grafana-oauth-secrets" # Env vars that are used by grafana
+    grafana.ini:
+      dashboards:
+        default_home_dashboard_path: /var/lib/grafana/dashboards/default/azure-dashboard.json
+      azure:
+        managed_identity_enabled: true
+      server:
+        root_url: https://<your_grafana_url>/
+      auth.azuread:
+        enabled: true
+        allow_sign_up: true
+        auth_url: https://<your_auth_url>
+        token_url: https://<your_token_url>
+        scopes: openid email profile
+        allow_assign_grafana_admin: true
+    dashboardProviders:
+      dashboardproviders.yaml:
+        apiVersion: 1
+        providers:
+        - name: 'default'
+          orgId: 1
+          folder: 'My Cloud'
+          type: file
+          disableDeletion: false
+          editable: true
+          options:
+            path: /var/lib/grafana/dashboards/default
+    dashboardsConfigMaps:
+      default: "my-cloud-dashboards"
+    ingress:
+      enabled: true
+      annotations:
+        kubernetes.io/ingress.class: traefik
+      hosts:
+        - <your_grafana_url>
+      tls:
+        - secretName: cloudflare-origin-tls
+          hosts:
+            - <your_grafana_url>
+    datasources:
+     datasources.yaml:
+       apiVersion: 1
+       datasources:
+        - name: Azure Monitor
+          type: grafana-azure-monitor-datasource
+          access: proxy
+          jsonData:
+            azureAuthType: msi
+          version: 1

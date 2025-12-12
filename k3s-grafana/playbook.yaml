@@ -1,0 +1,56 @@
+---
+- hosts: k3s_nodes
+  become: true
+  vars:
+    local_install_script_path: "./install_k3s.sh"
+    manifests_path: "./manifests"
+
+  tasks:
+    - name: Install aptitude
+      apt:
+        name: aptitude
+        state: latest
+        update_cache: true
+
+    - name: Install required system packages
+      apt:
+        pkg:
+          - curl
+          - git
+          - vim
+        state: latest
+        update_cache: true
+
+    - name: Check if K3s binary exists
+      stat:
+        path: /usr/local/bin/k3s
+      register: k3s_binary
+
+    - name: Copy K3s installation script
+      # Downloaded in advance to avoid curl + run
+      copy:
+        src: "{{ local_install_script_path }}"
+        dest: /tmp/install_k3s.sh
+        mode: '0755'
+
+    - name: Execute K3s installation / Upgrade
+      shell: |
+        /tmp/install_k3s.sh
+      # environment:
+        # Optional: Pin a version if you want controlled upgrades
+        # INSTALL_K3S_VERSION: "v1.28.2+k3s1" 
+      # The Logic: Run if it DOES NOT exist, OR if we forced an upgrade
+      when: (not k3s_binary.stat.exists) or (k3s_upgrade | default(false) | bool)
+
+    - name: Wait for K3s to be ready
+      command: k3s kubectl get nodes
+      register: nodes_check
+      until: nodes_check.rc == 0
+      retries: 10
+      delay: 5
+      changed_when: false
+
+    - name: Copy manifests to automatic install location
+      copy:
+        src: "{{ manifests_path }}"
+        dest: /var/lib/rancher/k3s/server/

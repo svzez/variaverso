@@ -1,0 +1,2 @@
+creation_rules:
+  - azure_keyvault: https://<your_vault>.vault.azure.net/keys/<your_key>

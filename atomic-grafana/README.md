@@ -57,7 +57,7 @@ ansible-playbook -i ./inventory.ini ./playbook.yaml
 ```
 
 > [!NOTE]
-> This pattern assumes the availability of a pre-existing virtual machine, allowing small teams to reuse underutilized infrastructure. > The trade-off between full end-to-end provisioning and faster Helm-based deployment is intentional.
+> This pattern assumes the availability of a pre-existing virtual machine, allowing small teams to reuse underutilized infrastructure. The trade-off between full end-to-end provisioning and faster Helm-based deployment is intentional.
 
 ## Manifests
 There a few kubernetes [manifests](./manifests/) that will be automatically applied after they are copied to the K3s VM.  Some of the configuration needs to be hardcoded as K3s lacks of kustomization.  These are values that will hardly change, like the public DNS record chosen for the dashboards.

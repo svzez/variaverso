@@ -13,7 +13,7 @@ spec:
     path: argocd/apps/podinfo
   destination:
     server: https://kubernetes.default.svc
-    namespace: podinfo
+    namespace: variaverso-podinfo
   syncPolicy:
     automated:
       prune: true

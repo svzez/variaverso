@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: podinfo
+  annotations:
+    kubernetes.io/ingress.class: traefik
+spec:
+  rules:
+    - host: podinfo.accentlabels.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: podinfo
+                port:
+                  number: 80
+  tls:
+    - hosts:
+        - podinfo.accentlabels.com
+      secretName: podinfo-tls

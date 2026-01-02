@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: podinfo
+  namespace: variaverso-bootstrap
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
+spec:
+  project: variaverso
+  source:
+    repoURL: https://github.com/svzez/variaverso.git
+    targetRevision: feature/add-podinfo
+    path: argocd/apps/podinfo
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: podinfo
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

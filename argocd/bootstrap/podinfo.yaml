@@ -9,7 +9,7 @@ spec:
   project: variaverso
   source:
     repoURL: https://github.com/svzez/variaverso.git
-    targetRevision: feature/add-podinfo
+    targetRevision: main
     path: argocd/apps/podinfo
   destination:
     server: https://kubernetes.default.svc

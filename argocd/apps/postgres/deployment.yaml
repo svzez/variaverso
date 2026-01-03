@@ -28,7 +28,7 @@ spec:
               name: postgres-creds
               key: dbpassword
         volumeMounts:
-            - mountPath: /var/lib/postgresql/data
+            - mountPath: /var/lib/postgresql
               name: postgres-vol
       volumes:
         - name: postgres-vol

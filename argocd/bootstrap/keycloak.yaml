@@ -42,7 +42,6 @@ spec:
             - "/opt/keycloak/bin/kc.sh"
           args:
             - start
-            - "--optimized"
           extraEnv: |
             - name: KC_LOG_LEVEL
               value: DEBUG          

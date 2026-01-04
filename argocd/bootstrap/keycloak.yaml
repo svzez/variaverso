@@ -45,7 +45,7 @@ spec:
           extraEnv: |
             - name: KC_HOSTNAME
               value: "https://keycloak.accentlabels.com"
-          extraEnvFrom:
+          extraEnvFrom: |
             - secretRef:
                 name: keycloak-admin
   destination:

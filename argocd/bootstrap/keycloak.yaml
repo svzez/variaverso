@@ -42,7 +42,10 @@ spec:
             - "/opt/keycloak/bin/kc.sh"
           args:
             - start
+            - "--optimize"
           extraEnv: |
+            - name: KC_LOG_LEVEL
+              value: DEBUG          
             - name: KC_HOSTNAME
               value: "https://keycloak.accentlabels.com"
             - name: KEYCLOAK_ADMIN

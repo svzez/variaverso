@@ -38,8 +38,6 @@ spec:
           extraEnv: |
             - name: KC_LOG_LEVEL
               value: DEBUG
-            - name: KC_HTTP_ENABLED
-              value: true
             - name: KC_HOSTNAME
               value: "https://keycloak.accentlabels.com"          
   destination:

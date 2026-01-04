@@ -23,6 +23,9 @@ spec:
               kubernetes.io/ingress.class: traefik
             rules:
               - host: keycloak.accentlabels.com
+                paths:
+                  - path: /auth
+                    pathType: Prefix
             tls:
             - hosts:
                 - keycloak.accentlabels.com

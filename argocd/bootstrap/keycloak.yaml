@@ -38,6 +38,10 @@ spec:
             port: 5432
             database: main
             username: main
+          command: 
+            - "/opt/keycloak/bin/kc.sh"
+          args:
+            - start
           extraEnv: |
             - name: KC_LOG_LEVEL
               value: DEBUG

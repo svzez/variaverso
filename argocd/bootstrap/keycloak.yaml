@@ -42,21 +42,12 @@ spec:
             - "/opt/keycloak/bin/kc.sh"
           args:
             - start
-          extraEnv: |
-            - name: KC_LOG_LEVEL
-              value: DEBUG          
+          extraEnv: |  
             - name: KC_HOSTNAME
-              value: "https://keycloak.accentlabels.com"
-            - name: KC_BOOTSTRAP_ADMIN_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  name: keycloak-admin-creds
-                  key: user
-            - name: KC_BOOTSTRAP_ADMIN_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: keycloak-admin-creds
-                  key: password
+              value: "https://keycloak.accentlabels.com/auth"
+            - name: KC_HOSTNAME_STRICT
+              value: "false"
+
   destination:
     server: https://kubernetes.default.svc
     namespace: variaverso-keycloak

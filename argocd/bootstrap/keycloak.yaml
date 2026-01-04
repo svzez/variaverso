@@ -12,7 +12,7 @@ spec:
       targetRevision: main
       path: argocd/apps/keycloak
       ref: manifests
-    - repoURL: oci://ghcr.io/codecentric/helm-charts
+    - repoURL: ghcr.io/codecentric/helm-charts
       chart: keycloakx
       targetRevision: 7.1.5
       helm:

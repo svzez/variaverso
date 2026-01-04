@@ -1,11 +1,14 @@
-proxy: edge
-service:
-  type: ClusterIP
 ingress:
   enabled: true
   ingressClassName: traefik
   annotations:
     kubernetes.io/ingress.class: traefik
+  rules:
+    - host: keycloak.accentlabels.com
+  tls:
+   - hosts:
+       - keycloak.accentlabels.com
+     secretName: "keycloak-tls"
 database:
   existingSecret: "postgres-creds"
   existingSecretKey: "dbpassword"
@@ -20,4 +23,6 @@ extraEnv:
   - name: KC_HTTP_ENABLED
     value: true
   - name: KC_HOSTNAME
-    value: "https://keycloak.accentlabels.com"    
+    value: "https://keycloak.accentlabels.com"
+  - name: KC_PROXY
+    value: 

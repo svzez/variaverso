@@ -1,0 +1,23 @@
+proxy: edge
+service:
+  type: ClusterIP
+ingress:
+  enabled: true
+  ingressClassName: traefik
+  annotations:
+    kubernetes.io/ingress.class: traefik
+database:
+  existingSecret: "postgres-creds"
+  existingSecretKey: "dbpassword"
+  vendor: postgres
+  hostname: postgres
+  port: 5432
+  database: main
+  username: main
+extraEnv:
+  - name: KC_LOG_LEVEL
+    value: DEBUG
+  - name: KC_HTTP_ENABLED
+    value: true
+  - name: KC_HOSTNAME
+    value: "https://keycloak.accentlabels.com"    

@@ -1,16 +1,23 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: postgres
+  name: keycloak
   namespace: argocd
   annotations:
     argocd.argoproj.io/sync-wave: "0"
 spec:
   project: variaverso
   source:
-    repoURL: https://github.com/svzez/variaverso.git
-    targetRevision: main
-    path: argocd/apps/postgres
+    - repoURL: https://github.com/svzez/variaverso.git
+      targetRevision: main
+      path: argocd/apps/keycloak
+      ref: manifests
+    - repoURL: oci://ghcr.io/codecentric/helm-charts
+      chart: keycloakx
+      targetRevision: 7.1.5
+      helm:
+        valueFiles:
+          - $manifests/values.yaml
   destination:
     server: https://kubernetes.default.svc
     namespace: variaverso-keycloak

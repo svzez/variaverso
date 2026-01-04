@@ -43,8 +43,6 @@ spec:
           args:
             - start
           extraEnv: |
-            - name: KC_LOG_LEVEL
-              value: DEBUG
             - name: KC_HOSTNAME
               value: "https://keycloak.accentlabels.com"          
   destination:

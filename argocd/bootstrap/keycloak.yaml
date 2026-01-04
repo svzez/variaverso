@@ -44,7 +44,10 @@ spec:
             - start
           extraEnv: |
             - name: KC_HOSTNAME
-              value: "https://keycloak.accentlabels.com"          
+              value: "https://keycloak.accentlabels.com"
+          extraEnvFrom:
+            - secretRef:
+                name: keycloak-admin
   destination:
     server: https://kubernetes.default.svc
     namespace: variaverso-keycloak

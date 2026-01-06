@@ -74,6 +74,8 @@ resource "aws_s3_object" "index" {
   key          = "index.html"
   source       = "./index.html"
   content_type = "text/html"
+  # Forces update when the file content changes
+  source_hash  = filemd5("./index.html")
 }
 
 output "website_endpoint" {

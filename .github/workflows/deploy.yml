@@ -12,26 +12,26 @@ env:
   TF_ROOT_DIR: terraform/svzez-com
 
 permissions:
-  id-token: write 
-  contents: read 
-  pull-requests: write 
+  id-token: write
+  contents: read
+  pull-requests: write
 
 jobs:
-  terraform_plan_apply:
+  terraform_plan:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.pull_request.head.ref }} 
+          ref: ${{ github.event.pull_request.head.ref }}
 
       - name: Configure AWS Credentials (for Plan)
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN }} 
+          role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN }}
           aws-region: ca-central-1
           role-session-name: plan-session
-          
+
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
 
@@ -41,6 +41,49 @@ jobs:
       - name: Terraform Plan
         run: terraform -chdir=${{ env.TF_ROOT_DIR }} plan -input=false -out=tfplan
 
-      - name: Terraform Apply
-        run: terraform -chdir=${{ env.TF_ROOT_DIR }} apply -auto-approve tfplan
+      # Show the plan on the run summary page so it can be reviewed before approving
+      - name: Plan Summary
+        run: |
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          terraform -chdir=${{ env.TF_ROOT_DIR }} show -no-color tfplan >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload Plan
         if: github.ref == 'refs/heads/main'
+        uses: actions/upload-artifact@v4
+        with:
+          name: tfplan
+          path: ${{ env.TF_ROOT_DIR }}/tfplan
+          retention-days: 1
+
+  # Waits for manual approval: the "production" environment requires a reviewer
+  terraform_apply:
+    needs: terraform_plan
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials (for Apply)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN }}
+          aws-region: ca-central-1
+          role-session-name: apply-session
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Terraform Init
+        run: terraform -chdir=${{ env.TF_ROOT_DIR }} init -reconfigure
+
+      - name: Download Plan
+        uses: actions/download-artifact@v4
+        with:
+          name: tfplan
+          path: ${{ env.TF_ROOT_DIR }}
+
+      - name: Terraform Apply
+        run: terraform -chdir=${{ env.TF_ROOT_DIR }} apply -input=false tfplan

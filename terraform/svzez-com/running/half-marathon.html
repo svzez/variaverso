@@ -1,0 +1,237 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta http-equiv="Cache-control" content="public">
+        <link href='https://fonts.googleapis.com/css?family=Source+Code+Pro:400' rel='stylesheet' type='text/css'>
+        <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+        <style>
+            #titulo {
+                font-size: 2em;
+                font-weight: bold;
+            }
+            #principal {
+                margin: auto;
+                width: 90%;
+                padding-bottom: 3em;
+            }
+            #principal > * {
+                max-width: 46rem;
+            }
+            #cabeza {
+                margin: auto;
+                padding-top: 5px;
+                width: 90%;
+                display: flex;
+                justify-content: space-between;
+                align-items: baseline;
+            }
+            html {
+                margin: 0;
+            }
+            a {
+                color: inherit;
+                text-decoration: none;
+            }
+            #principal a {
+                text-decoration: underline;
+            }
+            body {
+                margin: 0;
+                background-color: #fafafa;
+                color: black;
+                padding: 0;
+                font-family: 'Source Code Pro';
+                font-weight: 200;
+                line-height: 1.5;
+            }
+            h1, h2, h3 {
+                font-weight: 400;
+            }
+            h1 {
+                font-size: 1.5em;
+            }
+            h2 {
+                font-size: 1.2em;
+                margin-top: 2.5em;
+            }
+            h3 {
+                font-size: 1em;
+                margin-bottom: 0.25em;
+            }
+            h3 + p {
+                margin-top: 0;
+            }
+            .apagado {
+                color: #666;
+            }
+            .resaltado {
+                background-color: black;
+                color: white;
+                font-weight: 400;
+            }
+            /* Chart */
+            #chart {
+                overflow-x: auto;
+            }
+            #chart svg {
+                display: block;
+                width: 100%;
+                min-width: 560px;
+                height: auto;
+            }
+            .leyenda span {
+                margin-right: 1em;
+                white-space: nowrap;
+            }
+            .leyenda i {
+                display: inline-block;
+                width: 10px;
+                height: 10px;
+                margin-right: 0.4em;
+            }
+            .base  { background: #c4c4c4; }
+            .peak  { background: #8a8a8a; }
+            .taper { background: #555; }
+            .race  { background: #111; }
+            /* Race table */
+            .tabla {
+                overflow-x: auto;
+            }
+            table {
+                border-collapse: collapse;
+                width: 100%;
+            }
+            th, td {
+                text-align: left;
+                padding: 0.4em 0.6em;
+                border-bottom: 1px solid #ddd;
+                white-space: nowrap;
+            }
+            th {
+                font-weight: 400;
+                color: #666;
+            }
+        </style>
+        <title>Sub-2:00, the Long Way</title>
+    </head>
+    <body>
+        <main>
+            <div id="cabeza">
+                <a id="titulo" href="/">~/</a>
+                <a href="/running/">running/</a>
+            </div>
+            <div id="principal">
+                <p class="apagado">Half marathon · Montreal · Oct 11, 2026</p>
+                <h1>Reflections on my second half marathon</h1>
+                <p><span class="resaltado">&nbsp;1:56:20&nbsp;</span> chip time · goal &lt; 2:00:00 (−3:40) · April: 2:05:00</p>
+                <p>In April I ran my first half in 2:05 on years of easy running. My original plan was to prepare for a full marathon but when I finally decided, tickets were sold out (I didn't realize at that time how lucky I was).<br>
+                    I set to prepare for a half marathon instead and hired Claude Code as a personal coach. Six months later I ran 1:56:20. This is how the 19 weeks in between actually went, setbacks included.</p>
+                <ul>
+                    <li>19 weeks, Jun 1 to Oct 11</li>
+                    <li>4 runs a week, never more</li>
+                    <li>22.4 km longest run, past race distance</li>
+                    <li>~50 km peak week, capped on purpose</li>
+                </ul>
+
+                <h2>Weekly volume</h2>
+                <div id="chart"></div>
+                <p class="leyenda apagado">
+                    <span><i class="base"></i>Base</span>
+                    <span><i class="peak"></i>Peak</span>
+                    <span><i class="taper"></i>Taper</span>
+                    <span><i class="race"></i>Race week</span>
+                </p>
+                <p class="apagado">Kilometres per week from my Garmin log, rounded. Race week includes the 21.35 km race itself.</p>
+
+                <h2>Six chapters</h2>
+                <h3>Wk 1 <span class="resaltado">&nbsp;June&nbsp;</span> My plan</h3>
+                <p>Goal: under two hours, which is 5:41/km. I built the block on <em>80/20 Running</em> by Matt Fitzgerald: about 80% of time at truly easy effort, 20% hard. Four runs a week, weekly volume capped at 50 km, strength work at home after the runs.<br> I also wanted to do a "home made" lactate threshold test to see if my zones could be calibrated.</p>
+                <h3>Wk 3–6 <span class="resaltado">&nbsp;June–July&nbsp;</span> Everyone has a plan until they get punched in the mouth</h3>
+                <p>An ankle niggle, then a respiratory virus that wiped out week 3, then early heel pain. The lactate threshold test got postponed five times for illness, heat and sleep. When I finally ran it on July 11 it gave me a threshold of 149 bpm at about 5:00/km, and from then on the zones were "educated guesses" instead of age based.</p>
+                <h3>Wk 7–10 <span class="resaltado">&nbsp;July–Aug&nbsp;</span> Running and humidity</h3>
+                <p>Summer brought dew points of 18–21°C for weeks. I ran by heart rate, not pace, and let pace go slow on bad days. The easy days stayed easy, and long runs showed almost no heart-rate drift. The aerobic engine was building faster than I expected.</p>
+                <h3>Wk 11–14 <span class="resaltado">&nbsp;August&nbsp;</span> The hip flexor</h3>
+                <p>Soon after the first fast sessions, a niggle appeared in the front of my hip and moved around for weeks. I first blamed rising volume. The data said otherwise: volume had been falling for five weeks. Two things had changed. I'd started speed work after years of only easy running, and my routes had drifted so that 12 runs in a row put most of the climbing in the second half, on tired legs. A physio later confirmed overload and capped my long runs at 15–16 km. I still got one 22.4 km run in before that, past race distance. I ran it mostly to build resilience and to prove to myself that even with pain, finishing was in the realm of what's possible.</p>
+                <h3>Wk 15–16 <span class="resaltado">&nbsp;September&nbsp;</span> Learning to hold the pace</h3>
+                <p>I skipped a planned 10K tune-up to protect the leg. Instead I practised goal pace, and I still have a hard time holding it and I'm planning to work on it.</p>
+                <h3>Wk 17–19 <span class="resaltado">&nbsp;Sep–Oct&nbsp;</span> Taper and race</h3>
+                <p>I cut volume by about 45% but kept short bits of race pace. Heart-rate drift on easy runs dropped from 4.2% to 2.2% as the leg fatigue cleared. On race day the course was flat for 8 km and then hilly to the end. I stuck to the plan, picked it up from km 10 with the hip quiet, and ran the second half almost 4 minutes faster than the first (Côte Berri included).</p>
+
+                <h2>Race day: plan vs. what happened</h2>
+                <div class="tabla">
+                    <table>
+                        <thead><tr><th>Checkpoint</th><th>Plan</th><th>Actual</th><th>Gap</th></tr></thead>
+                        <tbody>
+                            <tr><td>5 km</td><td>28:40</td><td>28:58</td><td>+0:18</td></tr>
+                            <tr><td>10 km</td><td>56:35</td><td>56:32</td><td>−0:03</td></tr>
+                            <tr><td>15 km</td><td>1:24:30</td><td>1:23:37</td><td>−0:53</td></tr>
+                            <tr><td>Finish</td><td>~1:58:35</td><td>1:56:20</td><td>−2:15</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p>Race plan: start at 5:55–6:00 for 2 km, hold 5:35 to km 16, then run the last 5 km however I felt. Actual: km 3–16 averaged 5:29, km 17–21 averaged 5:11 with a 4:37 at km 20. Halves of 1:00:11 and 56:20. Fuel was two jelly bars at 40 and 80 minutes, rehearsed twice in training. 122nd of 344 in my age group.</p>
+
+                <h2>Lessons</h2>
+                <p class="apagado">Thinking about the next race...</p>
+                <h3><span class="resaltado">&nbsp;Easy means easy&nbsp;</span></h3>
+                <p>Most of my improvement came from keeping easy runs under 133 bpm, even when it felt too slow. The 80/20 method paid off.</p>
+                <h3><span class="resaltado">&nbsp;Lungs adapt faster than legs&nbsp;</span></h3>
+                <p>My aerobic fitness was ready for speed work long before my hip flexors were. Tendons and muscles take weeks to months. Give them that time and no more skipping strength training.</p>
+                <h3><span class="resaltado">&nbsp;Pacing is a skill&nbsp;</span></h3>
+                <p>Being fit enough for a pace and being able to hold it are different things. Practice, practice, practice.</p>
+                <h3><span class="resaltado">&nbsp;Taper cuts volume, not intensity&nbsp;</span></h3>
+                <p>Fewer kilometres, same number of runs, with short race-pace pieces kept in. I arrived fresh instead of flat.</p>
+                <h3><span class="resaltado">&nbsp;The first 5 km lie&nbsp;</span></h3>
+                <p>I feel rusty until about km 5 every time. Knowing that kept me from panicking early in the race.</p>
+
+                <h2>Training plan as code</h2>
+                <p>I treated the training planning as a small software project. The plan was a markdown file in a git repo, and Claude Code acted as the coach: it read my run data, reviewed each week, and proposed edits to the plan.</p>
+                <ol>
+                    <li><code>.fit files</code>: exported from Garmin after each run</li>
+                    <li><code>process_fit.py</code>: idempotent parser, keyed by start time</li>
+                    <li><code>activities.csv laps.csv</code>: per-run and per-lap history, in git</li>
+                    <li><code>training-plan.md</code>: living plan, edited by me and Claude Code</li>
+                </ol>
+                <ul>
+                    <li><strong>Small diffs only.</strong> Changes to the plan had to be minimal, and every change left a dated comment with its reason. The git history doubles as a training diary. This summary is based on those raw notes.</li>
+                    <li><strong>Locked blocks.</strong> Sections I marked <code>&lt;!-- locked --&gt;</code> were mine and off-limits to edits.</li>
+                    <li><strong>Per-second streams beat summaries.</strong> They caught chest-strap artifacts (a "162 bpm" at jogging pace was a dry strap in cold air) and showed where the climbing sat in each run.</li>
+                    <li><strong>The AI was wrong sometimes.</strong> It blamed the hip flexor on a strength session that actually came a day after the symptom, and it called the race's elevation a glitch when the course really was hilly. I corrected it, and the corrections went into the plan too. ABC: Always Be Challenging.</li>
+                </ul>
+
+                <p class="apagado">Method based on <em>80/20 Running</em> by Matt Fitzgerald (half-marathon Level 2 plan, adapted).<br>
+                    Gear: Garmin Instinct and a Garmin HRM 200 chest strap. Not medical advice; see a physio when something doesn't settle.</p>
+            </div>
+        </main>
+        <script>
+        (function(){
+          var weeks=[30.3,33.5,10.3,35,25,37,44.4,41.6,31.2,36.6,34.6,44.1,37,49.5,40.1,38.3,40.3,29.4,33.3];
+          var fill=function(i){return i<10?"#c4c4c4":i<16?"#8a8a8a":i<18?"#555":"#111"};
+          var notes={2:"Sick",10:"Hip flexor",13:"22.4 km run",18:"Race"};
+          var font="font-family=\"Source Code Pro, monospace\"";
+          var W=760,H=280,L=40,R=12,T=26,B=40,max=50;
+          var pw=W-L-R, ph=H-T-B, bw=pw/weeks.length, gap=bw*0.22;
+          var y=function(v){return T+ph-(v/max)*ph};
+          var s='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Weekly running volume over 19 weeks, peaking near 50 km in week 14">';
+          [0,10,20,30,40,50].forEach(function(t){
+            s+='<line x1="'+L+'" x2="'+(W-R)+'" y1="'+y(t)+'" y2="'+y(t)+'" stroke="#ddd" stroke-width="1"/>';
+            s+='<text x="'+(L-8)+'" y="'+(y(t)+4)+'" text-anchor="end" '+font+' font-size="11" fill="#666">'+t+'</text>';
+          });
+          s+='<text x="'+L+'" y="12" '+font+' font-size="11" fill="#666">km / week</text>';
+          weeks.forEach(function(v,i){
+            var x=L+i*bw+gap/2, w=bw-gap;
+            s+='<rect x="'+x.toFixed(1)+'" y="'+y(v).toFixed(1)+'" width="'+w.toFixed(1)+'" height="'+(T+ph-y(v)).toFixed(1)+'" fill="'+fill(i)+'"><title>Week '+(i+1)+': '+v+' km</title></rect>';
+            s+='<text x="'+(x+w/2).toFixed(1)+'" y="'+(H-B+16)+'" text-anchor="middle" '+font+' font-size="10.5" fill="#666">'+(i+1)+'</text>';
+            if(notes[i]!==undefined){
+              s+='<text x="'+(x+w/2).toFixed(1)+'" y="'+(y(v)-7).toFixed(1)+'" text-anchor="middle" '+font+' font-size="11" fill="black">'+notes[i]+'</text>';
+            }
+          });
+          s+='<text x="'+(L+pw/2)+'" y="'+(H-4)+'" text-anchor="middle" '+font+' font-size="11" fill="#666">week</text>';
+          s+='</svg>';
+          document.getElementById("chart").innerHTML=s;
+        })();
+        </script>
+    </body>
+</html>

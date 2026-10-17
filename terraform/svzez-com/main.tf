@@ -78,6 +78,22 @@ resource "aws_s3_object" "index" {
   source_hash  = filemd5("./index.html")
 }
 
+resource "aws_s3_object" "running_index" {
+  bucket       = aws_s3_bucket.svzez_com.id
+  key          = "running/index.html"
+  source       = "./running/index.html"
+  content_type = "text/html"
+  source_hash  = filemd5("./running/index.html")
+}
+
+resource "aws_s3_object" "running_half_marathon" {
+  bucket       = aws_s3_bucket.svzez_com.id
+  key          = "running/half-marathon.html"
+  source       = "./running/half-marathon.html"
+  content_type = "text/html"
+  source_hash  = filemd5("./running/half-marathon.html")
+}
+
 output "website_endpoint" {
   description = "The public URL of the website"
   value       = "http://${aws_s3_bucket_website_configuration.svzez_com.website_endpoint}"
